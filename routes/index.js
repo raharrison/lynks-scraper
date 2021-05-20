@@ -5,7 +5,7 @@ const scraper = require("./scrape/scrapeRoutes");
 const scrapeRouter = express.Router();
 scrapeRouter.get('/', scraper.welcome);
 scrapeRouter.get('/screenshot', scraper.screenshot);
-scrapeRouter.post('/scrape', scraper.scrape);
+scrapeRouter.post('/', scraper.scrape);
 // scrapeRouter.post('/', addOneUser);
 
 const baseRouter = express.Router();
