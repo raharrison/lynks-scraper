@@ -3,7 +3,7 @@ const fs = require("fs").promises;
 const {JSDOM} = require("jsdom");
 const {Readability} = require("@mozilla/readability");
 const createDOMPurify = require('dompurify');
-const {READABLE} = require("../extract/resourceTypes");
+const {READABLE_TEXT, READABLE_DOC} = require("../extract/resourceTypes");
 const {HTML, TEXT} = require("../extract/extensions");
 
 module.exports = async (url, html, targetPath, textContent) => {
@@ -17,12 +17,13 @@ module.exports = async (url, html, targetPath, textContent) => {
   const reader = new Readability(doc.window.document);
   const article = reader.parse();
   const extension = textContent ? TEXT : HTML
-  const outputPath = path.join(targetPath, `${READABLE}.${extension}`);
+  const type = textContent ? READABLE_TEXT : READABLE_DOC;
+  const outputPath = path.join(targetPath, `${type}.${extension}`);
   console.log("Writing readable to: " + outputPath);
   const content = textContent ? article.textContent.trim() : article.content;
   await fs.writeFile(outputPath, content);
   return {
-    resourceType: READABLE.toUpperCase(),
+    resourceType: type.toUpperCase(),
     targetPath: outputPath,
     extension: extension
   };

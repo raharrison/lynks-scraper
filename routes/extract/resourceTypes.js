@@ -4,5 +4,6 @@ module.exports = {
   PREVIEW: "preview", // small partial page screenshot
   PAGE: "page", // full HTML page
   DOCUMENT: "document", // full page PDF
-  READABLE: "readable", // HTML with extracted text content
+  READABLE_DOC: "readable_doc", // HTML with extracted readable content
+  READABLE_TEXT: "readable_text" // extracted readable text only
 }

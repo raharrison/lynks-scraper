@@ -33,7 +33,6 @@ const strLower = (s) => {
   return s ? s.toLowerCase() : '';
 };
 
-
 const getTitle = function (document) {
   let title = findMetaTitle(document) || document.title;
 
@@ -65,7 +64,8 @@ module.exports = (target, html) => {
     description: '',
     image: '',
     author: '',
-    published: ''
+    published: '',
+    keywords: []
   };
 
   const metaTags = dom.window.document.getElementsByTagName('meta');

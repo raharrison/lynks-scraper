@@ -1,5 +1,5 @@
-const {retrievePage, retrieveImage} = require("./retrieve");
-const {PREVIEW, THUMBNAIL, READABLE} = require("../extract/resourceTypes");
+const {retrievePage, retrieveImage} = require("../extract/retrieve");
+const {PREVIEW, THUMBNAIL, READABLE_TEXT} = require("../extract/resourceTypes");
 const extractMetadata = require("../extract/extractMetadata");
 const extractReadable = require("../extract/extractReadable");
 const extractPreview = require("../extract/extractPreview");
@@ -21,8 +21,8 @@ const suggestUrl = async (suggestRequest) => {
       generatedResources[THUMBNAIL] = await extractThumbnail(sourceImage, targetPath);
     }
   }
-  if (requestedTypes.has(READABLE)) {
-    generatedResources[READABLE] = await extractReadable(url, retrievedUrl.html, targetPath, true);
+  if (requestedTypes.has(READABLE_TEXT)) {
+    generatedResources[READABLE_TEXT] = await extractReadable(url, retrievedUrl.html, targetPath, true);
   }
 
   return {

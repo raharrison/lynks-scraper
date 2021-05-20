@@ -7,7 +7,7 @@ const retrievePage = async (url) => {
     compress: true,
     agent: false,
   });
-  if (res.status !== 200) {
+  if (!res.ok) {
     throw {message: `Got ${res.status} error code from "${url}"`};
   }
 

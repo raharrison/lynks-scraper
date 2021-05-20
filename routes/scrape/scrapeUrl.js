@@ -1,8 +1,18 @@
 const path = require("path");
 const fs = require("fs").promises;
 const puppeteer = require("puppeteer-extra");
-const {SCREENSHOT, PREVIEW, THUMBNAIL, DOCUMENT, READABLE, PAGE} = require("../extract/resourceTypes");
+const {retrieveImage} = require("../extract/retrieve");
+const {
+  SCREENSHOT,
+  PREVIEW,
+  THUMBNAIL,
+  DOCUMENT,
+  READABLE_TEXT,
+  READABLE_DOC,
+  PAGE
+} = require("../extract/resourceTypes");
 const {PNG, PDF, HTML} = require("../extract/extensions");
+const extractMetadata = require("../extract/extractMetadata");
 const extractReadable = require("../extract/extractReadable");
 const extractPreview = require("../extract/extractPreview");
 const extractThumbnail = require("../extract/extractThumbnail");
@@ -31,24 +41,24 @@ const generateScreenshot = async (page, targetPath) => {
   };
 }
 
-const generatePreview = async (page, targetPath) => {
-  const sourceImage = await page.screenshot({
+const generatePreview = async (page, targetPath, mainImage) => {
+  const sourceImage = mainImage || await page.screenshot({
     encoding: 'binary',
     type: "jpeg",
     quality: 85,
     fullPage: false
   });
-  return extractPreview(sourceImage, targetPath);
+  return await extractPreview(sourceImage, targetPath);
 }
 
-const generateThumbnail = async (page, targetPath) => {
-  const sourceImage = await page.screenshot({
+const generateThumbnail = async (page, targetPath, mainImage) => {
+  const sourceImage = mainImage || await page.screenshot({
     encoding: 'binary',
     type: "jpeg",
     quality: 85,
     fullPage: false
   });
-  return extractThumbnail(sourceImage, targetPath);
+  return await extractThumbnail(sourceImage, targetPath);
 }
 
 const generateDocument = async (page, targetPath) => {
@@ -74,14 +84,12 @@ const generateDocument = async (page, targetPath) => {
   };
 }
 
-const generateReadable = async (page, targetPath) => {
-  const dirty = await page.content();
+const generateReadable = async (page, targetPath, html, type) => {
   const resolvedUrl = await page.url();
-  return extractReadable(resolvedUrl, dirty, targetPath);
+  return await extractReadable(resolvedUrl, html, targetPath, type === READABLE_TEXT);
 }
 
-const generatePage = async (page, targetPath) => {
-  const html = await page.content();
+const generatePage = async (page, targetPath, html) => {
   const outputPath = path.join(targetPath, `${PAGE}.${HTML}`);
   console.log("Writing page to: " + outputPath);
   await fs.writeFile(outputPath, html);
@@ -106,30 +114,43 @@ const scrapeUrl = async (scrapeRequest) => {
 
     const page = await browser.newPage();
     await page.setViewport({width: 1280, height: 720});
-    await page.goto(url, {
+    const response = await page.goto(url, {
       waitUntil: 'networkidle0'
     });
+    const status = response.status();
+    if (status === 403 || status === 404) {
+      throw {message: "Unable to load url, got status code: " + status}
+    }
 
     const requestedTypes = new Set(resourceTypes.map(e => e.toLowerCase()));
+    const html = await page.content();
+    const metadata = extractMetadata(url, html);
 
     const generatedResources = {};
     if (requestedTypes.has(SCREENSHOT)) {
       generatedResources[SCREENSHOT] = await generateScreenshot(page, targetPath);
     }
-    if (requestedTypes.has(PREVIEW)) {
-      generatedResources[PREVIEW] = await generatePreview(page, targetPath);
-    }
-    if (requestedTypes.has(THUMBNAIL)) {
-      generatedResources[THUMBNAIL] = await generateThumbnail(page, targetPath);
+    if (requestedTypes.has(PREVIEW) || requestedTypes.has(THUMBNAIL)) {
+      if (metadata.image) {
+        const mainImage = await retrieveImage(metadata.image);
+        generatedResources[PREVIEW] = await generatePreview(page, targetPath, mainImage);
+        generatedResources[THUMBNAIL] = await generateThumbnail(page, targetPath, mainImage);
+      } else {
+        generatedResources[PREVIEW] = await generatePreview(page, targetPath);
+        generatedResources[THUMBNAIL] = await generateThumbnail(page, targetPath);
+      }
     }
     if (requestedTypes.has(DOCUMENT)) {
       generatedResources[DOCUMENT] = await generateDocument(page, targetPath);
     }
-    if (requestedTypes.has(READABLE)) {
-      generatedResources[READABLE] = await generateReadable(page, targetPath);
+    if (requestedTypes.has(READABLE_TEXT)) {
+      generatedResources[READABLE_TEXT] = await generateReadable(page, targetPath, html, READABLE_TEXT);
+    }
+    if (requestedTypes.has(READABLE_DOC)) {
+      generatedResources[READABLE_DOC] = await generateReadable(page, targetPath, html, READABLE_DOC);
     }
     if (requestedTypes.has(PAGE)) {
-      generatedResources[PAGE] = await generatePage(page, targetPath);
+      generatedResources[PAGE] = await generatePage(page, targetPath, html);
     }
     return generatedResources;
   } finally {
