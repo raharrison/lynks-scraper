@@ -1,11 +1,19 @@
 const path = require("path");
 const fs = require("fs").promises;
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-extra");
 const {SCREENSHOT, PREVIEW, THUMBNAIL, DOCUMENT, READABLE, PAGE} = require("../extract/resourceTypes");
 const {PNG, PDF, HTML} = require("../extract/extensions");
 const extractReadable = require("../extract/extractReadable");
 const extractPreview = require("../extract/extractPreview");
 const extractThumbnail = require("../extract/extractThumbnail");
+
+const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+puppeteer.use(StealthPlugin());
+
+const AdblockPlugin = require("puppeteer-extra-plugin-adblocker");
+puppeteer.use(AdblockPlugin({
+  blockTrackers: true
+}));
 
 const generateScreenshot = async (page, targetPath) => {
   const outputPath = path.join(targetPath, `${SCREENSHOT}.${PNG}`);
