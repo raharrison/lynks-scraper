@@ -41,10 +41,10 @@ const validateScrapeRequest = (request) => {
 
 const scrape = async (req, res) => {
   try {
-    const start = new Date().getMilliseconds();
+    const start = new Date().getTime();
     validateScrapeRequest(req);
     const resources = await scrapeUrl(req.body);
-    const end = new Date().getMilliseconds();
+    const end = new Date().getTime();
     console.log(`Successfully processed page in ${end - start}ms`)
     return res.status(200).json(resources);
   } catch (err) {

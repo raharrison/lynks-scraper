@@ -1,12 +1,11 @@
 const path = require("path");
 const fs = require("fs").promises;
 const puppeteer = require("puppeteer");
-const createDOMPurify = require('dompurify');
-const {JSDOM} = require('jsdom');
-const {Readability} = require('@mozilla/readability');
-const sharp = require("sharp");
-const {SCREENSHOT, PREVIEW, THUMBNAIL, DOCUMENT, READABLE, PAGE} = require("./resourceTypes");
-const {PNG, JPG, PDF, HTML} = require("./extensions");
+const {SCREENSHOT, PREVIEW, THUMBNAIL, DOCUMENT, READABLE, PAGE} = require("../extract/resourceTypes");
+const {PNG, PDF, HTML} = require("../extract/extensions");
+const extractReadable = require("../extract/extractReadable");
+const extractPreview = require("../extract/extractPreview");
+const extractThumbnail = require("../extract/extractThumbnail");
 
 const generateScreenshot = async (page, targetPath) => {
   const outputPath = path.join(targetPath, `${SCREENSHOT}.${PNG}`);
@@ -25,41 +24,23 @@ const generateScreenshot = async (page, targetPath) => {
 }
 
 const generatePreview = async (page, targetPath) => {
-  const rawPreview = await page.screenshot({
+  const sourceImage = await page.screenshot({
     encoding: 'binary',
     type: "jpeg",
     quality: 85,
     fullPage: false
   });
-  const outputPath = path.join(targetPath, `${PREVIEW}.${JPG}`);
-  console.log("Writing preview to: " + outputPath);
-  await sharp(rawPreview)
-    .resize(640, 360)
-    .toFile(outputPath);
-  return {
-    resourceType: PREVIEW.toUpperCase(),
-    targetPath: outputPath,
-    extension: JPG
-  };
+  return extractPreview(sourceImage, targetPath);
 }
 
 const generateThumbnail = async (page, targetPath) => {
-  const rawThumbnail = await page.screenshot({
+  const sourceImage = await page.screenshot({
     encoding: 'binary',
     type: "jpeg",
     quality: 85,
     fullPage: false
   });
-  const outputPath = path.join(targetPath, `${THUMBNAIL}.${JPG}`);
-  console.log("Writing thumbnail to: " + outputPath);
-  await sharp(rawThumbnail)
-    .resize(320, 180)
-    .toFile(outputPath);
-  return {
-    resourceType: THUMBNAIL.toUpperCase(),
-    targetPath: outputPath,
-    extension: JPG
-  };
+  return extractThumbnail(sourceImage, targetPath);
 }
 
 const generateDocument = async (page, targetPath) => {
@@ -88,23 +69,7 @@ const generateDocument = async (page, targetPath) => {
 const generateReadable = async (page, targetPath) => {
   const dirty = await page.content();
   const resolvedUrl = await page.url();
-  const window = new JSDOM("").window;
-  const DOMPurify = createDOMPurify(window);
-  const cleaned = DOMPurify.sanitize(dirty);
-
-  const doc = new JSDOM(cleaned, {
-    url: resolvedUrl
-  });
-  const reader = new Readability(doc.window.document);
-  const article = reader.parse();
-  const outputPath = path.join(targetPath, `${READABLE}.${HTML}`);
-  console.log("Writing readable to: " + outputPath);
-  await fs.writeFile(outputPath, article.content);
-  return {
-    resourceType: READABLE.toUpperCase(),
-    targetPath: outputPath,
-    extension: HTML
-  };
+  return extractReadable(resolvedUrl, dirty, targetPath);
 }
 
 const generatePage = async (page, targetPath) => {
@@ -147,7 +112,7 @@ const scrapeUrl = async (scrapeRequest) => {
       generatedResources[PREVIEW] = await generatePreview(page, targetPath);
     }
     if (requestedTypes.has(THUMBNAIL)) {
-      generatedResources[THUMBNAIL] = await generatePreview(page, targetPath);
+      generatedResources[THUMBNAIL] = await generateThumbnail(page, targetPath);
     }
     if (requestedTypes.has(DOCUMENT)) {
       generatedResources[DOCUMENT] = await generateDocument(page, targetPath);
