@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs").promises;
 const puppeteer = require("puppeteer-extra");
-const {retrieveImage} = require("../extract/retrieve");
+const {retrieveImage} = require("../common/retrieve");
 const {
   SCREENSHOT,
   PREVIEW,
@@ -10,8 +10,8 @@ const {
   READABLE_TEXT,
   READABLE_DOC,
   PAGE
-} = require("../extract/resourceTypes");
-const {PNG, PDF, HTML} = require("../extract/extensions");
+} = require("../common/resourceTypes");
+const {PNG, PDF, HTML} = require("../common/extensions");
 const extractMetadata = require("../extract/extractMetadata");
 const extractReadable = require("../extract/extractReadable");
 const extractPreview = require("../extract/extractPreview");

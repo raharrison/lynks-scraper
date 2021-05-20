@@ -1,5 +1,5 @@
-const {retrievePage, retrieveImage} = require("../extract/retrieve");
-const {PREVIEW, THUMBNAIL, READABLE_TEXT} = require("../extract/resourceTypes");
+const {retrievePage, retrieveImage} = require("../common/retrieve");
+const {PREVIEW, THUMBNAIL, READABLE_TEXT} = require("../common/resourceTypes");
 const extractMetadata = require("../extract/extractMetadata");
 const extractReadable = require("../extract/extractReadable");
 const extractPreview = require("../extract/extractPreview");

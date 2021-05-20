@@ -3,8 +3,8 @@ const fs = require("fs").promises;
 const {JSDOM} = require("jsdom");
 const {Readability} = require("@mozilla/readability");
 const createDOMPurify = require('dompurify');
-const {READABLE_TEXT, READABLE_DOC} = require("../extract/resourceTypes");
-const {HTML, TEXT} = require("../extract/extensions");
+const {READABLE_TEXT, READABLE_DOC} = require("../common/resourceTypes");
+const {HTML, TEXT} = require("../common/extensions");
 
 module.exports = async (url, html, targetPath, textContent) => {
   const window = new JSDOM("").window;

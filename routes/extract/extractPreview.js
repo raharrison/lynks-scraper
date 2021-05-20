@@ -1,7 +1,7 @@
 const path = require("path");
 const sharp = require("sharp");
-const {PREVIEW} = require("./resourceTypes");
-const {JPG} = require("./extensions");
+const {PREVIEW} = require("../common/resourceTypes");
+const {JPG} = require("../common/extensions");
 
 module.exports = async (sourceImage, targetPath) => {
   const outputPath = path.join(targetPath, `${PREVIEW}.${JPG}`);
