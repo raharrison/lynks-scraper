@@ -2,26 +2,23 @@ const path = require("path");
 const fs = require("fs").promises;
 const {JSDOM} = require("jsdom");
 const {Readability, isProbablyReaderable} = require("@mozilla/readability");
-const createDOMPurify = require('dompurify');
 const {READABLE_TEXT, READABLE_DOC} = require("../common/resourceTypes");
+const cleanHtml = require("./cleanHtml");
 const {HTML, TEXT} = require("../common/extensions");
 
-const cleanHtml = (url, html) => {
-  const window = new JSDOM("").window;
-  const DOMPurify = createDOMPurify(window);
-  const cleaned = DOMPurify.sanitize(html);
-  return new JSDOM(cleaned, {
+const isReadableCompatible = (url, html) => {
+  const cleaned = cleanHtml(html);
+  const doc = new JSDOM(cleaned, {
     url: url
   });
-}
-
-const isReadableCompatible = (url, html) => {
-  const doc = cleanHtml(url, html);
   return isProbablyReaderable(doc.window.document);
 };
 
 const extractReadable = async (url, html, targetPath, textContent) => {
-  const doc = cleanHtml(url, html);
+  const cleaned = cleanHtml(html);
+  const doc = new JSDOM(cleaned, {
+    url: url
+  });
   const reader = new Readability(doc.window.document);
   const article = reader.parse();
   const extension = textContent ? TEXT : HTML

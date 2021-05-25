@@ -13,6 +13,7 @@ const {
 } = require("../common/resourceTypes");
 const {PNG, PDF, HTML} = require("../common/extensions");
 const {extractReadable, isReadableCompatible} = require("../extract/extractReadable");
+const cleanHtml = require("../extract/cleanHtml");
 const extractMetadata = require("../extract/extractMetadata");
 const extractPreview = require("../extract/extractPreview");
 const extractThumbnail = require("../extract/extractThumbnail");
@@ -90,9 +91,10 @@ const generateReadable = async (page, targetPath, html, type) => {
 }
 
 const generatePage = async (page, targetPath, html) => {
+  const cleaned = cleanHtml(html);
   const outputPath = path.join(targetPath, `${PAGE}.${HTML}`);
   console.log("Writing page to: " + outputPath);
-  await fs.writeFile(outputPath, html);
+  await fs.writeFile(outputPath, cleaned);
   return {
     resourceType: PAGE.toUpperCase(),
     targetPath: outputPath,
@@ -126,33 +128,33 @@ const scrapeUrl = async (scrapeRequest) => {
     const html = await page.content();
     const metadata = extractMetadata(url, html);
 
-    const generatedResources = {};
+    const generatedResources = [];
     if (requestedTypes.has(SCREENSHOT)) {
-      generatedResources[SCREENSHOT] = await generateScreenshot(page, targetPath);
+      generatedResources.push(await generateScreenshot(page, targetPath));
     }
     if (requestedTypes.has(PREVIEW) || requestedTypes.has(THUMBNAIL)) {
       if (metadata.image) {
         const mainImage = await retrieveImage(metadata.image);
-        generatedResources[PREVIEW] = await generatePreview(page, targetPath, mainImage);
-        generatedResources[THUMBNAIL] = await generateThumbnail(page, targetPath, mainImage);
+        generatedResources.push(await generatePreview(page, targetPath, mainImage));
+        generatedResources.push(await generateThumbnail(page, targetPath, mainImage));
       } else {
-        generatedResources[PREVIEW] = await generatePreview(page, targetPath);
-        generatedResources[THUMBNAIL] = await generateThumbnail(page, targetPath);
+        generatedResources.push(await generatePreview(page, targetPath));
+        generatedResources.push(await generateThumbnail(page, targetPath));
       }
     }
     if (requestedTypes.has(DOCUMENT)) {
-      generatedResources[DOCUMENT] = await generateDocument(page, targetPath);
+      generatedResources.push(await generateDocument(page, targetPath));
     }
     if (requestedTypes.has(PAGE)) {
-      generatedResources[PAGE] = await generatePage(page, targetPath, html);
+      generatedResources.push(await generatePage(page, targetPath, html));
     }
     if (requestedTypes.has(READABLE_TEXT) || requestedTypes.has(READABLE_DOC)) {
       if (isReadableCompatible(url, html)) {
         if (requestedTypes.has(READABLE_TEXT)) {
-          generatedResources[READABLE_TEXT] = await generateReadable(page, targetPath, html, READABLE_TEXT);
+          generatedResources.push(await generateReadable(page, targetPath, html, READABLE_TEXT));
         }
         if (requestedTypes.has(READABLE_DOC)) {
-          generatedResources[READABLE_DOC] = await generateReadable(page, targetPath, html, READABLE_DOC);
+          generatedResources.push(await generateReadable(page, targetPath, html, READABLE_DOC));
         }
       } else {
         console.log("Url content is not readable compatible");
