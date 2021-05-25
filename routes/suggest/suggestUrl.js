@@ -1,7 +1,7 @@
 const {retrievePage, retrieveImage} = require("../common/retrieve");
 const {PREVIEW, THUMBNAIL, READABLE_TEXT} = require("../common/resourceTypes");
+const {extractReadable, isReadableCompatible} = require("../extract/extractReadable");
 const extractMetadata = require("../extract/extractMetadata");
-const extractReadable = require("../extract/extractReadable");
 const extractPreview = require("../extract/extractPreview");
 const extractThumbnail = require("../extract/extractThumbnail");
 
@@ -22,7 +22,11 @@ const suggestUrl = async (suggestRequest) => {
     }
   }
   if (requestedTypes.has(READABLE_TEXT)) {
-    generatedResources[READABLE_TEXT] = await extractReadable(url, retrievedUrl.html, targetPath, true);
+    if (isReadableCompatible(url, retrievedUrl.html)) {
+      generatedResources[READABLE_TEXT] = await extractReadable(url, retrievedUrl.html, targetPath, true);
+    } else {
+      console.log("Url content is not readable compatible");
+    }
   }
 
   return {

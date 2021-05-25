@@ -12,8 +12,8 @@ const {
   PAGE
 } = require("../common/resourceTypes");
 const {PNG, PDF, HTML} = require("../common/extensions");
+const {extractReadable, isReadableCompatible} = require("../extract/extractReadable");
 const extractMetadata = require("../extract/extractMetadata");
-const extractReadable = require("../extract/extractReadable");
 const extractPreview = require("../extract/extractPreview");
 const extractThumbnail = require("../extract/extractThumbnail");
 
@@ -143,14 +143,20 @@ const scrapeUrl = async (scrapeRequest) => {
     if (requestedTypes.has(DOCUMENT)) {
       generatedResources[DOCUMENT] = await generateDocument(page, targetPath);
     }
-    if (requestedTypes.has(READABLE_TEXT)) {
-      generatedResources[READABLE_TEXT] = await generateReadable(page, targetPath, html, READABLE_TEXT);
-    }
-    if (requestedTypes.has(READABLE_DOC)) {
-      generatedResources[READABLE_DOC] = await generateReadable(page, targetPath, html, READABLE_DOC);
-    }
     if (requestedTypes.has(PAGE)) {
       generatedResources[PAGE] = await generatePage(page, targetPath, html);
+    }
+    if (requestedTypes.has(READABLE_TEXT) || requestedTypes.has(READABLE_DOC)) {
+      if (isReadableCompatible(url, html)) {
+        if (requestedTypes.has(READABLE_TEXT)) {
+          generatedResources[READABLE_TEXT] = await generateReadable(page, targetPath, html, READABLE_TEXT);
+        }
+        if (requestedTypes.has(READABLE_DOC)) {
+          generatedResources[READABLE_DOC] = await generateReadable(page, targetPath, html, READABLE_DOC);
+        }
+      } else {
+        console.log("Url content is not readable compatible");
+      }
     }
     return generatedResources;
   } finally {
