@@ -1,7 +1,7 @@
-const path = require("path");
 const fs = require("fs").promises;
 const {JSDOM} = require("jsdom");
 const {Readability, isProbablyReaderable} = require("@mozilla/readability");
+const generateResourcePath = require("../common/generateResourcePath");
 const {READABLE_TEXT, READABLE_DOC} = require("../common/resourceTypes");
 const cleanHtml = require("./cleanHtml");
 const {HTML, TEXT} = require("../common/extensions");
@@ -23,7 +23,7 @@ const extractReadable = async (url, html, targetPath, textContent) => {
   const article = reader.parse();
   const extension = textContent ? TEXT : HTML
   const type = textContent ? READABLE_TEXT : READABLE_DOC;
-  const outputPath = path.join(targetPath, `${type}.${extension}`);
+  const outputPath = generateResourcePath(targetPath, type, extension);
   console.log("Writing readable to: " + outputPath);
   const content = textContent ? article.textContent.trim() : article.content;
   await fs.writeFile(outputPath, content);

@@ -1,4 +1,3 @@
-const path = require("path");
 const fs = require("fs").promises;
 const puppeteer = require("puppeteer-extra");
 const {retrieveImage} = require("../common/retrieve");
@@ -11,6 +10,7 @@ const {
   READABLE_DOC,
   PAGE
 } = require("../common/resourceTypes");
+const generateResourcePath = require("../common/generateResourcePath");
 const {PNG, PDF, HTML} = require("../common/extensions");
 const {extractReadable, isReadableCompatible} = require("../extract/extractReadable");
 const cleanHtml = require("../extract/cleanHtml");
@@ -27,7 +27,7 @@ puppeteer.use(AdblockPlugin({
 }));
 
 const generateScreenshot = async (page, targetPath) => {
-  const outputPath = path.join(targetPath, `${SCREENSHOT}.${PNG}`);
+  const outputPath = generateResourcePath(targetPath, SCREENSHOT, PNG);
   console.log("Writing screenshot to: " + outputPath);
   await page.screenshot({
     path: outputPath,
@@ -63,7 +63,7 @@ const generateThumbnail = async (page, targetPath, mainImage) => {
 }
 
 const generateDocument = async (page, targetPath) => {
-  const outputPath = path.join(targetPath, `${DOCUMENT}.${PDF}`);
+  const outputPath = generateResourcePath(targetPath, DOCUMENT, PDF);
   console.log("Writing document to: " + outputPath);
   await page.pdf({
     path: outputPath,
@@ -92,7 +92,7 @@ const generateReadable = async (page, targetPath, html, type) => {
 
 const generatePage = async (page, targetPath, html) => {
   const cleaned = cleanHtml(html);
-  const outputPath = path.join(targetPath, `${PAGE}.${HTML}`);
+  const outputPath = generateResourcePath(targetPath, PAGE, HTML);
   console.log("Writing page to: " + outputPath);
   await fs.writeFile(outputPath, cleaned);
   return {
