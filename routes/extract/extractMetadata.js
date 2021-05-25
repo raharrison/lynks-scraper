@@ -61,10 +61,10 @@ module.exports = (target, html) => {
   const metadata = {
     url: '',
     title: '',
-    description: '',
-    image: '',
-    author: '',
-    published: '',
+    description: null,
+    image: null,
+    author: null,
+    published: null,
     keywords: []
   };
 

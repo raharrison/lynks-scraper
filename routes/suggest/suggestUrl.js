@@ -13,30 +13,32 @@ const suggestUrl = async (suggestRequest) => {
 
   const requestedTypes = resourceTypes ? new Set(resourceTypes.map(e => e.toLowerCase())) : [];
 
-  const generatedResources = {};
+  const generatedResources = [];
   if (requestedTypes.has(PREVIEW) || requestedTypes.has(THUMBNAIL)) {
     if (metadata.image) {
       const sourceImage = await retrieveImage(metadata.image);
-      generatedResources[PREVIEW] = await extractPreview(sourceImage, targetPath);
-      generatedResources[THUMBNAIL] = await extractThumbnail(sourceImage, targetPath);
+      generatedResources.push(await extractPreview(sourceImage, targetPath));
+      generatedResources.push(await extractThumbnail(sourceImage, targetPath));
     }
   }
   if (requestedTypes.has(READABLE_TEXT)) {
     if (isReadableCompatible(url, retrievedUrl.html)) {
-      generatedResources[READABLE_TEXT] = await extractReadable(url, retrievedUrl.html, targetPath, true);
+      generatedResources.push(await extractReadable(url, retrievedUrl.html, targetPath, true));
     } else {
       console.log("Url content is not readable compatible");
     }
   }
 
   return {
-    url: metadata.url,
-    title: metadata.title,
-    keywords: metadata.keywords,
-    description: metadata.description,
-    image: metadata.image,
-    author: metadata.author,
-    published: metadata.published,
+    details: {
+      url: metadata.url,
+      title: metadata.title,
+      keywords: metadata.keywords,
+      description: metadata.description,
+      image: metadata.image,
+      author: metadata.author,
+      published: metadata.published,
+    },
     resources: generatedResources
   };
 };
