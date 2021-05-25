@@ -116,6 +116,7 @@ const scrapeUrl = async (scrapeRequest) => {
 
     const page = await browser.newPage();
     await page.setViewport({width: 1280, height: 720});
+    console.log("Navigating to url..");
     const response = await page.goto(url, {
       waitUntil: 'networkidle0'
     });
@@ -123,6 +124,7 @@ const scrapeUrl = async (scrapeRequest) => {
     if (status === 403 || status === 404) {
       throw {message: "Unable to load url, got status code: " + status}
     }
+    console.log("Received response status code: " + status);
 
     const requestedTypes = new Set(resourceTypes.map(e => e.toLowerCase()));
     const html = await page.content();

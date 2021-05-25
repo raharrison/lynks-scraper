@@ -7,6 +7,7 @@ const extractThumbnail = require("../extract/extractThumbnail");
 
 const suggestUrl = async (suggestRequest) => {
   const {url, resourceTypes, targetPath} = suggestRequest;
+  console.log(`Generating suggestion for ${url} with types ${resourceTypes}`);
 
   const retrievedUrl = await retrievePage(url);
   const metadata = extractMetadata(retrievedUrl.resUrl, retrievedUrl.html);
