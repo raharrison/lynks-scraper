@@ -41,7 +41,23 @@ const getTitle = function (document) {
 
   // replace all double white spaces with single spaces
   title = title.replace(/\s+/g, ' ');
+  const original = title;
 
+  for (let delimiter of [" | ", " - ", " :: ", " / "]) {
+    if (title.includes(delimiter)) {
+      const parts = title.split(delimiter);
+      if (parts[0].split(" ").length >= 4) {
+        title = parts[0];
+        break;
+      } else if (parts[parts.length - 1].split(" ").length >= 4) {
+        title = parts[parts.length - 1];
+        break;
+      }
+    }
+  }
+  if (title.length < 15) {
+    return original;
+  }
   return title;
 }
 
