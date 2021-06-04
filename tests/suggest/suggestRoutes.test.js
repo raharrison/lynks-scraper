@@ -6,7 +6,7 @@ const {PREVIEW, THUMBNAIL, READABLE_TEXT} = require("../../routes/common/resourc
 
 describe('Suggest endpoint validation', () => {
 
-  it('should fail if not url present', async () => {
+  it('should fail if no url present', async () => {
     const res = await request(app)
       .post('/api/suggest')
       .send({});
