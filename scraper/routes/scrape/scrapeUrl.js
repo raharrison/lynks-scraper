@@ -111,6 +111,9 @@ const scrapeUrl = async (scrapeRequest) => {
       headless: true,
       args: [
         "--disable-gpu",
+        "--disable-dev-shm-usage",
+        "--no-sandbox",
+        "--disable-setuid-sandbox"
       ]
     });
 
