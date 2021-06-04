@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "jest"
   },
   "license": "ISC",
   "dependencies": {
@@ -17,5 +18,9 @@
     "puppeteer-extra-plugin-stealth": "^2.7.8",
     "puppeteer-extra-plugin-adblocker": "^2.11.11",
     "sharp": "^0.28.3"
+  },
+  "devDependencies": {
+    "jest": "^27.0.4",
+    "supertest": "^6.1.3"
   }
 }
