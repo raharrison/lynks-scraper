@@ -14,6 +14,8 @@ const {
 
 const url = "https://ryanharrison.co.uk/2020/04/12/kotlin-java-ci-with-github-actions.html";
 
+jest.setTimeout(30000);
+
 describe('Scrape endpoint validation', () => {
 
   it('should fail if no url present', async () => {
@@ -58,7 +60,6 @@ describe('Scrape endpoint', () => {
   });
 
   it('should generate scraped resources', async () => {
-    jest.setTimeout(30000);
     const res = await request(app)
       .post('/api/scrape')
       .send({
