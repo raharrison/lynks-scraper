@@ -38,7 +38,7 @@ const suggestUrl = async (suggestRequest) => {
       description: metadata.description,
       image: metadata.image,
       author: metadata.author,
-      published: metadata.published,
+      published: metadata.published
     },
     resources: generatedResources
   };
