@@ -1,0 +1,8 @@
+services:
+  scraper:
+    init: true
+    image: "raharrison/lynks-scraper"
+    ports:
+      - "${DOCKER_SCRAPER_PORT_FORWARD:-3000}:3000"
+    volumes:
+      - "${DOCKER_SCRAPER_MEDIA_MOUNT:-./media}:/media"
