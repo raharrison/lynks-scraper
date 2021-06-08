@@ -1,5 +1,6 @@
 const fs = require("fs");
 const {parse} = require("url");
+const logger = require("../common/logger");
 const {suggestUrl} = require("./suggestUrl");
 
 const validateSuggestRequest = (request) => {
@@ -30,10 +31,10 @@ const suggest = async (req, res) => {
     validateSuggestRequest(req);
     const suggestion = await suggestUrl(req.body);
     const end = new Date().getTime();
-    console.log(`Successfully created suggestion in ${end - start}ms`)
+    logger.info(`Successfully created suggestion in ${end - start}ms`)
     return res.status(200).json(suggestion);
   } catch (err) {
-    console.log(err);
+    logger.error(err);
     return res.status(err.status || 500).json({error: err.message || err});
   }
 }

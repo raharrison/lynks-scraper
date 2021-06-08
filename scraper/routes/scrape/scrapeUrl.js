@@ -1,5 +1,6 @@
 const fs = require("fs").promises;
 const puppeteer = require("puppeteer-extra");
+const logger = require("../common/logger");
 const {retrieveImage} = require("../common/retrieve");
 const {
   SCREENSHOT,
@@ -28,7 +29,7 @@ puppeteer.use(AdblockPlugin({
 
 const generateScreenshot = async (page, targetPath) => {
   const outputPath = generateResourcePath(targetPath, SCREENSHOT, PNG);
-  console.log("Writing screenshot to: " + outputPath);
+  logger.info("Writing screenshot to: " + outputPath);
   await page.screenshot({
     path: outputPath,
     encoding: 'binary',
@@ -64,7 +65,7 @@ const generateThumbnail = async (page, targetPath, mainImage) => {
 
 const generateDocument = async (page, targetPath) => {
   const outputPath = generateResourcePath(targetPath, DOCUMENT, PDF);
-  console.log("Writing document to: " + outputPath);
+  logger.info("Writing document to: " + outputPath);
   await page.pdf({
     path: outputPath,
     landscape: true,
@@ -93,7 +94,7 @@ const generateReadable = async (page, targetPath, html, type) => {
 const generatePage = async (page, targetPath, html) => {
   const cleaned = cleanHtml(html);
   const outputPath = generateResourcePath(targetPath, PAGE, HTML);
-  console.log("Writing page to: " + outputPath);
+  logger.info("Writing page to: " + outputPath);
   await fs.writeFile(outputPath, cleaned);
   return {
     resourceType: PAGE.toUpperCase(),
@@ -104,7 +105,7 @@ const generatePage = async (page, targetPath, html) => {
 
 const scrapeUrl = async (scrapeRequest) => {
   const {url, resourceTypes, targetPath} = scrapeRequest;
-  console.log(`Scraping ${url} for types ${resourceTypes}`);
+  logger.info(`Scraping ${url} for types ${resourceTypes}`);
   let browser;
   try {
     browser = await puppeteer.launch({
@@ -119,7 +120,7 @@ const scrapeUrl = async (scrapeRequest) => {
 
     const page = await browser.newPage();
     await page.setViewport({width: 1280, height: 720});
-    console.log("Navigating to url..");
+    logger.info("Navigating to url..");
     const response = await page.goto(url, {
       waitUntil: 'networkidle0'
     });
@@ -127,7 +128,7 @@ const scrapeUrl = async (scrapeRequest) => {
     if (status === 403 || status === 404) {
       throw {message: "Unable to load url, got status code: " + status}
     }
-    console.log("Received response status code: " + status);
+    logger.info("Received response status code: " + status);
 
     const requestedTypes = new Set(resourceTypes.map(e => e.toLowerCase()));
     const html = await page.content();
@@ -162,15 +163,17 @@ const scrapeUrl = async (scrapeRequest) => {
           generatedResources.push(await generateReadable(page, targetPath, html, READABLE_DOC));
         }
       } else {
-        console.log("Url content is not readable compatible");
+        logger.warn("Url content is not readable compatible");
       }
     }
     return generatedResources;
   } finally {
-    try {
-      await browser.close();
-    } catch (err) {
-      console.log("Unable to close browser: " + err);
+    if (browser) {
+      try {
+        await browser.close();
+      } catch (err) {
+        logger.error("Unable to close browser: " + err);
+      }
     }
   }
 }

@@ -1,4 +1,5 @@
 const fs = require("fs");
+const logger = require("../common/logger");
 const scrapeUrl = require("./scrapeUrl");
 
 const validateScrapeRequest = (request) => {
@@ -24,10 +25,10 @@ const scrape = async (req, res) => {
     validateScrapeRequest(req);
     const resources = await scrapeUrl(req.body);
     const end = new Date().getTime();
-    console.log(`Successfully processed page in ${end - start}ms`)
+    logger.info(`Successfully processed page in ${end - start}ms`)
     return res.status(200).json(resources);
   } catch (err) {
-    console.log(err);
+    logger.error(err);
     return res.status(err.status || 500).json({error: err.message || err});
   }
 }

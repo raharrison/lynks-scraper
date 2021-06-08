@@ -19,6 +19,7 @@ webpages. Provides a simple web API to generate a number of resources or page me
   DOM's in Node.js
 - [Readability](https://github.com/mozilla/readability) - create 'reader view' versions of webpages without the clutter
 - [Sharp](https://github.com/lovell/sharp) - fast image resizing
+- [Winston](https://github.com/winstonjs/winston) - logging
 - [Jest](https://jestjs.io/) and [Supertest](https://github.com/visionmedia/supertest) - testing
 
 ## Routes
@@ -46,8 +47,12 @@ image (if present). Only a subset of the overall resource types are available.
 
 ```json
 {
-  "url": "https://foojay.io/today/demystifying-jvm-memory-management/", 
-  "resourceTypes": ["PREVIEW", "THUMBNAIL", "READABLE_TEXT"],
+  "url": "https://foojay.io/today/demystifying-jvm-memory-management/",
+  "resourceTypes": [
+    "PREVIEW",
+    "THUMBNAIL",
+    "READABLE_TEXT"
+  ],
   "targetPath": "/where/to/save/resources"
 }
 ```
@@ -66,7 +71,11 @@ absolute path to the target location on the filesystem:
   "details": {
     "url": "https://deepu.tech/memory-management-in-jvm/",
     "title": "Demystifying Java Virtual Machine Memory Management",
-    "keywords": ["java", "memory", "management"],
+    "keywords": [
+      "java",
+      "memory",
+      "management"
+    ],
     "description": "I aim to demystify the concepts behind memory management and take a look at memory management in some of the modern programming languages.",
     "image": "https://i.imgur.com/Kv9ichJ.gif",
     "author": "Deepu K Sasidharan",
@@ -101,17 +110,17 @@ screenshots, readable versions, previews and PDF's to the provided target path.
 
 ```json
 {
-    "url": "https://foojay.io/today/demystifying-jvm-memory-management",
-    "resourceTypes": [
-        "SCREENSHOT",
-        "PREVIEW",
-        "DOCUMENT",
-        "READABLE_TEXT",
-        "READABLE_DOC",
-        "PAGE",
-        "THUMBNAIL"
-    ],
-    "targetPath": "/where/to/save/resources"
+  "url": "https://foojay.io/today/demystifying-jvm-memory-management",
+  "resourceTypes": [
+    "SCREENSHOT",
+    "PREVIEW",
+    "DOCUMENT",
+    "READABLE_TEXT",
+    "READABLE_DOC",
+    "PAGE",
+    "THUMBNAIL"
+  ],
+  "targetPath": "/where/to/save/resources"
 }
 ```
 
@@ -126,40 +135,40 @@ filesystem:
 
 ```json
 [
-    {
-        "resourceType": "SCREENSHOT",
-        "targetPath": "/where/to/save/resources/screenshot_1623084226610.png",
-        "extension": "png"
-    },
-    {
-        "resourceType": "PREVIEW",
-        "targetPath": "/where/to/save/resources/preview_1623084227744.jpg",
-        "extension": "jpg"
-    },
-    {
-        "resourceType": "THUMBNAIL",
-        "targetPath": "/where/to/save/resources/thumbnail_1623084227757.jpg",
-        "extension": "jpg"
-    },
-    {
-        "resourceType": "DOCUMENT",
-        "targetPath": "/where/to/save/resources/document_1623084227766.pdf",
-        "extension": "pdf"
-    },
-    {
-        "resourceType": "PAGE",
-        "targetPath": "/where/to/save/resources/page_1623084228844.html",
-        "extension": "html"
-    },
-    {
-        "resourceType": "READABLE_TEXT",
-        "targetPath": "/where/to/save/resources/readable_text_1623084229416.txt",
-        "extension": "txt"
-    },
-    {
-        "resourceType": "READABLE_DOC",
-        "targetPath": "/where/to/save/resources/readable_doc_1623084229749.html",
-        "extension": "html"
-    }
+  {
+    "resourceType": "SCREENSHOT",
+    "targetPath": "/where/to/save/resources/screenshot_1623084226610.png",
+    "extension": "png"
+  },
+  {
+    "resourceType": "PREVIEW",
+    "targetPath": "/where/to/save/resources/preview_1623084227744.jpg",
+    "extension": "jpg"
+  },
+  {
+    "resourceType": "THUMBNAIL",
+    "targetPath": "/where/to/save/resources/thumbnail_1623084227757.jpg",
+    "extension": "jpg"
+  },
+  {
+    "resourceType": "DOCUMENT",
+    "targetPath": "/where/to/save/resources/document_1623084227766.pdf",
+    "extension": "pdf"
+  },
+  {
+    "resourceType": "PAGE",
+    "targetPath": "/where/to/save/resources/page_1623084228844.html",
+    "extension": "html"
+  },
+  {
+    "resourceType": "READABLE_TEXT",
+    "targetPath": "/where/to/save/resources/readable_text_1623084229416.txt",
+    "extension": "txt"
+  },
+  {
+    "resourceType": "READABLE_DOC",
+    "targetPath": "/where/to/save/resources/readable_doc_1623084229749.html",
+    "extension": "html"
+  }
 ]
 ```

@@ -1,3 +1,4 @@
+const logger = require("./logger");
 const fetch = require('node-fetch');
 
 const retrievePage = async (url) => {
@@ -16,7 +17,7 @@ const retrievePage = async (url) => {
     throw {message: `Got invalid content-type (${contentType}) from "${url}"`};
   }
 
-  console.log(`Loaded remote HTML content from "${url}"`);
+  logger.info(`Loaded remote HTML content from "${url}"`);
   const html = await res.text();
   const resUrl = res.url;
 
@@ -37,7 +38,7 @@ const retrieveImage = async (url) => {
   if (!res.ok) {
     throw {message: `Got ${res.status} error code from "${url}"`};
   }
-  console.log(`Loaded remote image content from "${url}"`);
+  logger.info(`Loaded remote image content from "${url}"`);
   return await res.buffer();
 };
 
