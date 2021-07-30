@@ -25,11 +25,11 @@ RUN npm ci --production \
 
 USER lynksuser
 
-COPY ./scraper/ ./scraper/
+COPY --chown=lynksuser:lynksuser ./scraper/ ./scraper/
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["node", "./scraper/index.js"]
 
 # docker build -t raharrison/lynks-scraper .
 
