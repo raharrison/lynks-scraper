@@ -8,7 +8,7 @@ module.exports = async (sourceImage, targetPath) => {
   const outputPath = generateResourcePath(targetPath, THUMBNAIL, JPG);
   logger.info("Writing thumbnail to: " + outputPath);
   await sharp(sourceImage)
-    .resize(320, 180)
+    .resize(160, 90)
     .toFile(outputPath);
   return {
     resourceType: THUMBNAIL.toUpperCase(),
