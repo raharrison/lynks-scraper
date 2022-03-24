@@ -1,5 +1,5 @@
 const logger = require("../common/logger");
-const {retrievePage, retrieveImage} = require("../common/retrieve");
+const {retrievePage, retrieveImage, IMAGE_SIZE_THRESHOLD} = require("../common/retrieve");
 const {PREVIEW, THUMBNAIL, READABLE_TEXT} = require("../common/resourceTypes");
 const {extractReadable, isReadableCompatible} = require("../extract/extractReadable");
 const extractMetadata = require("../extract/extractMetadata");
@@ -19,8 +19,12 @@ const suggestUrl = async (suggestRequest) => {
   if (requestedTypes.has(PREVIEW) || requestedTypes.has(THUMBNAIL)) {
     if (metadata.image) {
       const sourceImage = await retrieveImage(metadata.image);
-      generatedResources.push(await extractPreview(sourceImage, targetPath));
-      generatedResources.push(await extractThumbnail(sourceImage, targetPath));
+      if (sourceImage.length > IMAGE_SIZE_THRESHOLD) {
+        generatedResources.push(await extractThumbnail(sourceImage, targetPath));
+        generatedResources.push(await extractPreview(sourceImage, targetPath));
+      } else {
+        logger.info(`Main image size of ${sourceImage.length} is below minimum threshold, not creating resources`);
+      }
     }
   }
   if (requestedTypes.has(READABLE_TEXT)) {

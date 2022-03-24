@@ -1,7 +1,7 @@
 const fs = require("fs").promises;
 const puppeteer = require("puppeteer-extra");
 const logger = require("../common/logger");
-const {retrieveImage} = require("../common/retrieve");
+const {retrieveImage, IMAGE_SIZE_THRESHOLD} = require("../common/retrieve");
 const {
   SCREENSHOT,
   PREVIEW,
@@ -141,8 +141,14 @@ const scrapeUrl = async (scrapeRequest) => {
     if (requestedTypes.has(PREVIEW) || requestedTypes.has(THUMBNAIL)) {
       if (metadata.image) {
         const mainImage = await retrieveImage(metadata.image);
-        generatedResources.push(await generatePreview(page, targetPath, mainImage));
-        generatedResources.push(await generateThumbnail(page, targetPath, mainImage));
+        if (mainImage > IMAGE_SIZE_THRESHOLD) {
+          generatedResources.push(await generatePreview(page, targetPath, mainImage));
+          generatedResources.push(await generateThumbnail(page, targetPath, mainImage));
+        } else {
+          logger.info(`Main image size of ${mainImage.length} is below minimum threshold, falling back`);
+          generatedResources.push(await generatePreview(page, targetPath));
+          generatedResources.push(await generateThumbnail(page, targetPath));
+        }
       } else {
         generatedResources.push(await generatePreview(page, targetPath));
         generatedResources.push(await generateThumbnail(page, targetPath));

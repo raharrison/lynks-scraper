@@ -1,6 +1,8 @@
 const logger = require("./logger");
 const fetch = require('node-fetch');
 
+const IMAGE_SIZE_THRESHOLD = 2000; // 2KB min
+
 const retrievePage = async (url) => {
   const res = await fetch(url, {
     timeout: 30 * 1000,
@@ -42,4 +44,4 @@ const retrieveImage = async (url) => {
   return await res.buffer();
 };
 
-module.exports = {retrievePage, retrieveImage};
+module.exports = {retrievePage, retrieveImage, IMAGE_SIZE_THRESHOLD};
