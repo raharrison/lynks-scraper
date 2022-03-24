@@ -1,4 +1,4 @@
-FROM node:16-buster-slim
+FROM node:16-bullseye-slim
 
 ENV NODE_ENV=production
 
@@ -31,6 +31,5 @@ EXPOSE 3000
 
 CMD ["node", "./scraper/index.js"]
 
-# docker build -t raharrison/lynks-scraper .
 
 # docker run -i -p 3000:3000 --init --rm --cap-add=SYS_ADMIN --name lynks-scraper raharrison/lynks-scraper
