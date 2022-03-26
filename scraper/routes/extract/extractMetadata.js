@@ -1,4 +1,5 @@
 const {JSDOM} = require('jsdom');
+const {unescape} = require("html-escaper");
 
 const descriptionAttrs = [
   'description',
@@ -34,7 +35,7 @@ const strLower = (s) => {
 };
 
 const getTitle = function (document) {
-  let title = findMetaTitle(document) || document.title;
+  let title = unescape(findMetaTitle(document) || document.title);
 
   // replace all 3 types of line breaks with a space
   title = title.replace(/(\r\n|\n|\r)/gm, ' ');
@@ -86,7 +87,8 @@ module.exports = (target, html) => {
 
   const metaTags = dom.window.document.getElementsByTagName('meta');
   for (const tag of metaTags) {
-    const content = tag.getAttribute('content');
+    const tagContent = tag.getAttribute('content');
+    const content = tagContent ? unescape(tagContent) : tagContent;
     const property = strLower(tag.getAttribute('property'));
     const name = strLower(tag.getAttribute('name'));
 
@@ -106,7 +108,7 @@ module.exports = (target, html) => {
       metadata.published = content;
     }
     if (keywordAttrs.includes(property) || keywordAttrs.includes(name)) {
-      metadata.keywords = content.split(",").map(e => e.trim());
+      metadata.keywords = content ? content.split(",").map(e => e.trim()) : [];
     }
   }
 
