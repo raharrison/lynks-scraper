@@ -1,6 +1,6 @@
 {
   "name": "lynks-scraper",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "scraper/app.js",
   "scripts": {
     "start": "node scraper/index.js",
@@ -10,6 +10,7 @@
     "@mozilla/readability": "^0.4.2",
     "dompurify": "^2.3.6",
     "express": "^4.17.3",
+    "html-escaper": "^2.0.2",
     "jsdom": "^19.0.0",
     "node-fetch": "^2.6.7",
     "puppeteer": "^13.5.1",
