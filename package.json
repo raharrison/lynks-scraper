@@ -4,7 +4,7 @@
   "main": "scraper/app.js",
   "scripts": {
     "start": "node scraper/index.js",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "@mozilla/readability": "^0.4.2",
@@ -23,5 +23,9 @@
   "devDependencies": {
     "jest": "^27.5.1",
     "supertest": "^6.2.2"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageDirectory": "./coverage/"
   }
 }
