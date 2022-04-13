@@ -1,3 +1,6 @@
+[![Build](https://github.com/raharrison/lynks-scraper/actions/workflows/build.yml/badge.svg)](https://github.com/raharrison/lynks-scraper/actions/workflows/build.yml)
+[![codecov](https://codecov.io/gh/raharrison/lynks-scraper/branch/master/graph/badge.svg?token=ZPH979TW7H)](https://codecov.io/gh/raharrison/lynks-scraper)
+
 # Lynks Scraper
 
 Scraping component for the [Lynks project](https://github.com/raharrison/lynks-server) to extract content from specified
