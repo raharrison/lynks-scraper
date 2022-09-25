@@ -1,6 +1,6 @@
 {
   "name": "lynks-scraper",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "scraper/app.js",
   "scripts": {
     "start": "node scraper/index.js",
@@ -8,21 +8,21 @@
   },
   "dependencies": {
     "@mozilla/readability": "^0.4.2",
-    "dompurify": "^2.3.6",
-    "express": "^4.17.3",
+    "dompurify": "^2.4.0",
+    "express": "^4.18.1",
     "html-escaper": "^2.0.2",
-    "jsdom": "^19.0.0",
+    "jsdom": "^20.0.0",
     "node-fetch": "^2.6.7",
-    "puppeteer": "^13.5.1",
-    "puppeteer-extra": "^3.2.3",
-    "puppeteer-extra-plugin-stealth": "^2.9.0",
-    "puppeteer-extra-plugin-adblocker": "^2.12.0",
-    "sharp": "^0.30.3",
-    "winston": "^3.6.0"
+    "puppeteer": "^18.0.5",
+    "puppeteer-extra": "^3.3.4",
+    "puppeteer-extra-plugin-stealth": "^2.11.1",
+    "puppeteer-extra-plugin-adblocker": "^2.13.5",
+    "sharp": "^0.31.0",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
-    "jest": "^27.5.1",
-    "supertest": "^6.2.2"
+    "jest": "^29.0.3",
+    "supertest": "^6.2.4"
   },
   "jest": {
     "collectCoverage": true,
