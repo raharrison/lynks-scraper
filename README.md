@@ -87,17 +87,17 @@ absolute path to the target location on the filesystem:
   "resources": [
     {
       "resourceType": "PREVIEW",
-      "targetPath": "/where/to/save/resources/preview_1623084013177.jpg",
+      "targetPath": "/where/to/save/resources/preview.jpg",
       "extension": "jpg"
     },
     {
       "resourceType": "THUMBNAIL",
-      "targetPath": "/where/to/save/resources/thumbnail_1623084013199.jpg",
+      "targetPath": "/where/to/save/resources/thumbnail.jpg",
       "extension": "jpg"
     },
     {
       "resourceType": "READABLE_TEXT",
-      "targetPath": "/where/to/save/resources/readable_text_1623084013805.txt",
+      "targetPath": "/where/to/save/resources/readable_text.txt",
       "extension": "txt"
     }
   ]
@@ -140,37 +140,37 @@ filesystem:
 [
   {
     "resourceType": "SCREENSHOT",
-    "targetPath": "/where/to/save/resources/screenshot_1623084226610.png",
+    "targetPath": "/where/to/save/resources/screenshot.png",
     "extension": "png"
   },
   {
     "resourceType": "PREVIEW",
-    "targetPath": "/where/to/save/resources/preview_1623084227744.jpg",
+    "targetPath": "/where/to/save/resources/preview.jpg",
     "extension": "jpg"
   },
   {
     "resourceType": "THUMBNAIL",
-    "targetPath": "/where/to/save/resources/thumbnail_1623084227757.jpg",
+    "targetPath": "/where/to/save/resources/thumbnail.jpg",
     "extension": "jpg"
   },
   {
     "resourceType": "DOCUMENT",
-    "targetPath": "/where/to/save/resources/document_1623084227766.pdf",
+    "targetPath": "/where/to/save/resources/document.pdf",
     "extension": "pdf"
   },
   {
     "resourceType": "PAGE",
-    "targetPath": "/where/to/save/resources/page_1623084228844.html",
+    "targetPath": "/where/to/save/resources/page.html",
     "extension": "html"
   },
   {
     "resourceType": "READABLE_TEXT",
-    "targetPath": "/where/to/save/resources/readable_text_1623084229416.txt",
+    "targetPath": "/where/to/save/resources/readable_text.txt",
     "extension": "txt"
   },
   {
     "resourceType": "READABLE_DOC",
-    "targetPath": "/where/to/save/resources/readable_doc_1623084229749.html",
+    "targetPath": "/where/to/save/resources/readable_doc.html",
     "extension": "html"
   }
 ]
