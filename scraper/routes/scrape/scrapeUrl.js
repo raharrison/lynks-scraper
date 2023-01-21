@@ -1,5 +1,6 @@
 const fs = require("fs").promises;
 const puppeteer = require("puppeteer-extra");
+const {executablePath} = require('puppeteer');
 const logger = require("../common/logger");
 const {retrieveImage, IMAGE_SIZE_THRESHOLD} = require("../common/retrieve");
 const {
@@ -110,6 +111,7 @@ const scrapeUrl = async (scrapeRequest) => {
   try {
     browser = await puppeteer.launch({
       headless: true,
+      executablePath: executablePath(),
       args: [
         "--disable-gpu",
         "--disable-dev-shm-usage",
