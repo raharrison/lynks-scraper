@@ -1,29 +1,28 @@
-const fs = require("fs");
-const request = require('supertest');
-const app = require('../../app');
-const {JPG, TEXT, PNG, PDF, HTML} = require("../../routes/common/extensions");
-const {
-  SCREENSHOT,
-  PREVIEW,
-  THUMBNAIL,
-  DOCUMENT,
-  PAGE,
-  READABLE_TEXT,
-  READABLE_DOC
-} = require("../../routes/common/resourceTypes");
+import fs from "fs";
+import request from "supertest";
+import {fileURLToPath} from 'url';
+import {dirname} from 'path';
+import app from "../../app.js";
+import {HTML, JPG, PDF, PNG, TEXT} from "../../routes/common/extensions.js";
+import {DOCUMENT, PAGE, PREVIEW, READABLE_DOC, READABLE_TEXT, SCREENSHOT, THUMBNAIL} from "../../routes/common/resourceTypes.js";
+import {jest} from '@jest/globals'
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const url = "https://ryanharrison.co.uk/2020/04/12/kotlin-java-ci-with-github-actions.html";
 
 jest.setTimeout(30000);
 
 describe('Scrape endpoint validation', () => {
 
+  const targetPath = `${__dirname}/resources-scrape`;
+
   it('should fail if no url present', async () => {
     const res = await request(app)
       .post('/api/scrape')
       .send({
         resourceTypes: [PREVIEW, THUMBNAIL],
-        targetPath: this.targetPath
+        targetPath: targetPath
       });
     expect(res.statusCode).toEqual(400);
     expect(res.body).toHaveProperty("error", "Url is required");

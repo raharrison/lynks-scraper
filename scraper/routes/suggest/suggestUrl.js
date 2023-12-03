@@ -1,12 +1,15 @@
-const logger = require("../common/logger");
-const {retrievePage, retrieveImage, IMAGE_SIZE_THRESHOLD} = require("../common/retrieve");
-const {PREVIEW, THUMBNAIL, READABLE_TEXT} = require("../common/resourceTypes");
-const {extractReadable, isReadableCompatible} = require("../extract/extractReadable");
-const extractMetadata = require("../extract/extractMetadata");
-const extractPreview = require("../extract/extractPreview");
-const extractThumbnail = require("../extract/extractThumbnail");
+import logger from "../common/logger.js";
+import {IMAGE_SIZE_THRESHOLD, retrieveImage, retrievePage} from "../common/retrieve.js";
 
-const suggestUrl = async (suggestRequest) => {
+import {PREVIEW, READABLE_TEXT, THUMBNAIL} from "../common/resourceTypes.js";
+
+import {extractReadable, isReadableCompatible} from "../extract/extractReadable.js";
+
+import extractMetadata from "../extract/extractMetadata.js";
+import extractPreview from "../extract/extractPreview.js";
+import extractThumbnail from "../extract/extractThumbnail.js";
+
+export const suggestUrl = async (suggestRequest) => {
   const {url, resourceTypes, targetPath} = suggestRequest;
   logger.info(`Generating suggestion for ${url} with types ${resourceTypes}`);
 
@@ -48,5 +51,3 @@ const suggestUrl = async (suggestRequest) => {
     resources: generatedResources
   };
 };
-
-module.exports = {suggestUrl};

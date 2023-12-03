@@ -1,7 +1,5 @@
-module.exports = {
-  JPG: "jpg",
-  PNG: "png",
-  HTML: "html",
-  PDF: "pdf",
-  TEXT: "txt"
-};
+export const JPG = "jpg";
+export const PNG = "png";
+export const HTML = "html";
+export const PDF = "pdf";
+export const TEXT = "txt";

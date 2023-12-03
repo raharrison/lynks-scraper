@@ -1,7 +1,12 @@
-const fs = require('fs');
-const extractPreview = require("../../routes/extract/extractPreview");
-const {JPG} = require("../../routes/common/extensions");
-const {PREVIEW} = require("../../routes/common/resourceTypes");
+import fs from "fs";
+import {fileURLToPath} from 'url';
+import {dirname} from 'path';
+import extractPreview from "../../routes/extract/extractPreview.js";
+import {JPG} from "../../routes/common/extensions.js";
+import {PREVIEW} from "../../routes/common/resourceTypes.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 describe('Extract preview', () => {
 

@@ -1,21 +1,21 @@
-const express = require("express");
+import express from "express";
 
-const scraper = require("./scrape/scrapeRoutes");
-const suggest = require("./suggest/suggestRoutes");
-const health = require("./health/healthRoutes");
+import {scrape} from "./scrape/scrapeRoutes.js";
+import {suggest} from "./suggest/suggestRoutes.js";
+import {heartbeat} from "./health/healthRoutes.js";
 
 const scrapeRouter = express.Router();
-scrapeRouter.post('/', scraper.scrape);
+scrapeRouter.post('/', scrape);
 
 const suggestRouter = express.Router();
-suggestRouter.post('/', suggest.suggest);
+suggestRouter.post('/', suggest);
 
 const healthRouter = express.Router();
-healthRouter.get('/heartbeat', health.heartbeat);
+healthRouter.get('/heartbeat', heartbeat);
 
 const baseRouter = express.Router();
 baseRouter.use('/scrape', scrapeRouter);
 baseRouter.use('/suggest', suggestRouter);
 baseRouter.use('/health', healthRouter);
 
-module.exports = baseRouter;
+export default baseRouter;

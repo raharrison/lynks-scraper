@@ -1,5 +1,5 @@
-const {JSDOM} = require('jsdom');
-const {unescape} = require("html-escaper");
+import {JSDOM} from "jsdom";
+import {unescape} from "html-escaper";
 
 const descriptionAttrs = [
   'description',
@@ -72,7 +72,7 @@ const findMetaTitle = function (document) {
   return null;
 }
 
-module.exports = (target, html) => {
+export default (target, html) => {
   const dom = new JSDOM(html);
 
   const metadata = {

@@ -1,9 +1,9 @@
-const logger = require("./logger");
-const fetch = require('node-fetch');
+import fetch from "node-fetch";
+import logger from "./logger.js";
 
-const IMAGE_SIZE_THRESHOLD = 2000; // 2KB min
+export const IMAGE_SIZE_THRESHOLD = 2000; // 2KB min
 
-const retrievePage = async (url) => {
+export const retrievePage = async (url) => {
   const res = await fetch(url, {
     timeout: 30 * 1000,
     redirect: 'follow',
@@ -30,7 +30,7 @@ const retrievePage = async (url) => {
   };
 };
 
-const retrieveImage = async (url) => {
+export const retrieveImage = async (url) => {
   const res = await fetch(url, {
     timeout: 30 * 1000,
     redirect: 'follow',
@@ -43,5 +43,3 @@ const retrieveImage = async (url) => {
   logger.info(`Loaded remote image content from "${url}"`);
   return await res.buffer();
 };
-
-module.exports = {retrievePage, retrieveImage, IMAGE_SIZE_THRESHOLD};

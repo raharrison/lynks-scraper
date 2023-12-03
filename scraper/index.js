@@ -1,5 +1,5 @@
-const logger = require("./routes/common/logger");
-const app = require("./app");
+import logger from "./routes/common/logger.js";
+import app from "./app.js";
 
 process.on('uncaughtException', function (exception) {
   logger.error(exception);

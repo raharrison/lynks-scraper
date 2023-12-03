@@ -1,6 +1,6 @@
-const path = require("path");
+import path from "path";
 
-module.exports = (targetPath, resourceType, extension) => {
+export default (targetPath, resourceType, extension) => {
   const filename = `${resourceType}.${extension}`;
   return path.join(targetPath, filename);
 }

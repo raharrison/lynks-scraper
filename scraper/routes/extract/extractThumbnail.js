@@ -1,10 +1,11 @@
-const sharp = require("sharp");
-const logger = require("../common/logger");
-const generateResourcePath = require("../common/generateResourcePath");
-const {THUMBNAIL} = require("../common/resourceTypes");
-const {JPG} = require("../common/extensions");
+import sharp from "sharp";
 
-module.exports = async (sourceImage, targetPath) => {
+import logger from "../common/logger.js";
+import generateResourcePath from "../common/generateResourcePath.js";
+import {THUMBNAIL} from "../common/resourceTypes.js";
+import {JPG} from "../common/extensions.js";
+
+export default async (sourceImage, targetPath) => {
   const outputPath = generateResourcePath(targetPath, THUMBNAIL, JPG);
   logger.info("Writing thumbnail to: " + outputPath);
   await sharp(sourceImage)

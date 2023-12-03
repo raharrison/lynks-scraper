@@ -1,5 +1,6 @@
-const express = require("express");
-const baseRouter = require("./routes");
+import express from "express";
+
+import baseRouter from "./routes/index.js";
 
 const app = express();
 
@@ -15,4 +16,4 @@ app.use((err, req, res, next) => {
   });
 });
 
-module.exports = app;
+export default app;

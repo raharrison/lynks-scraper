@@ -1,8 +1,13 @@
-const fs = require("fs");
-const request = require('supertest');
-const app = require('../../app');
-const {JPG, TEXT} = require("../../routes/common/extensions");
-const {PREVIEW, THUMBNAIL, READABLE_TEXT} = require("../../routes/common/resourceTypes");
+import fs from "fs";
+import request from "supertest";
+import {fileURLToPath} from 'url';
+import {dirname} from 'path';
+import app from "../../app.js";
+import {JPG, TEXT} from "../../routes/common/extensions.js";
+import {PREVIEW, READABLE_TEXT, THUMBNAIL} from "../../routes/common/resourceTypes.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 describe('Suggest endpoint validation', () => {
 

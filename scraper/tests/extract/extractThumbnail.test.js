@@ -1,7 +1,12 @@
-const fs = require('fs');
-const extractThumbnail = require("../../routes/extract/extractThumbnail");
-const {JPG} = require("../../routes/common/extensions");
-const {THUMBNAIL} = require("../../routes/common/resourceTypes");
+import fs from "fs";
+import {fileURLToPath} from 'url';
+import {dirname} from 'path';
+import extractThumbnail from "../../routes/extract/extractThumbnail.js";
+import {JPG} from "../../routes/common/extensions.js";
+import {THUMBNAIL} from "../../routes/common/resourceTypes.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 describe('Extract thumbnail', () => {
 

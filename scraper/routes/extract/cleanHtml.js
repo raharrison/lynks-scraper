@@ -1,7 +1,7 @@
-const {JSDOM} = require("jsdom");
-const createDOMPurify = require('dompurify');
+import createDOMPurify from "dompurify";
+import {JSDOM} from "jsdom";
 
-module.exports = (html) => {
+export default (html) => {
   const window = new JSDOM("").window;
   const DOMPurify = createDOMPurify(window);
   return DOMPurify.sanitize(html);

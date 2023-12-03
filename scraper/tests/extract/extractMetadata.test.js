@@ -1,5 +1,10 @@
-const fs = require('fs');
-const extractMetadata = require("../../routes/extract/extractMetadata");
+import fs from "fs";
+import {fileURLToPath} from 'url';
+import {dirname} from 'path';
+import extractMetadata from "../../routes/extract/extractMetadata.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 describe('Extract metadata', () => {
 

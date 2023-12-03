@@ -1,12 +1,17 @@
-const fs = require('fs');
-const {extractReadable, isReadableCompatible} = require("../../routes/extract/extractReadable");
-const {TEXT, HTML} = require("../../routes/common/extensions");
-const {READABLE_TEXT, READABLE_DOC} = require("../../routes/common/resourceTypes");
+import fs from "fs";
+import {fileURLToPath} from 'url';
+import {dirname} from 'path';
+import {extractReadable, isReadableCompatible} from "../../routes/extract/extractReadable.js";
+import {HTML, TEXT} from "../../routes/common/extensions.js";
+import {READABLE_DOC, READABLE_TEXT} from "../../routes/common/resourceTypes.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 describe('Extract readable', () => {
 
   const url = "https://ryanharrison.co.uk/2020/04/12/kotlin-java-ci-with-github-actions.html";
-  const targetPath = `${__dirname}/resources-readable`;
+  const targetPath = `${__dirname}resources-readable`;
 
   beforeAll(() => {
     fs.mkdirSync(targetPath, {

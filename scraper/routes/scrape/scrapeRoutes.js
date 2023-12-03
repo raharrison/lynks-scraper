@@ -1,6 +1,7 @@
-const fs = require("fs");
-const logger = require("../common/logger");
-const scrapeUrl = require("./scrapeUrl");
+import fs from "fs";
+
+import logger from "../common/logger.js";
+import {scrapeUrl} from "./scrapeUrl.js";
 
 const validateScrapeRequest = (request) => {
   const {url, resourceTypes, targetPath} = request.body;
@@ -19,7 +20,7 @@ const validateScrapeRequest = (request) => {
   });
 }
 
-const scrape = async (req, res) => {
+export const scrape = async (req, res) => {
   try {
     const start = new Date().getTime();
     validateScrapeRequest(req);
@@ -31,8 +32,4 @@ const scrape = async (req, res) => {
     logger.error(err);
     return res.status(err.status || 500).json({error: err.message || err});
   }
-}
-
-module.exports = {
-  scrape
 }

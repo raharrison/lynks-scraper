@@ -1,6 +1,6 @@
-const generateResourcePath = require("../../routes/common/generateResourcePath");
-const {PNG} = require("../../routes/common/extensions");
-const {SCREENSHOT} = require("../../routes/common/resourceTypes");
+import generateResourcePath from "../../routes/common/generateResourcePath.js";
+import {PNG} from "../../routes/common/extensions.js";
+import {SCREENSHOT} from "../../routes/common/resourceTypes.js";
 
 describe('Resource Path Generation', () => {
   it('should generate a valid resource path', async () => {

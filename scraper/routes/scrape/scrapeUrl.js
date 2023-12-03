@@ -1,29 +1,25 @@
-const fs = require("fs").promises;
-const puppeteer = require("puppeteer-extra");
-const {executablePath} = require('puppeteer');
-const logger = require("../common/logger");
-const {retrieveImage, IMAGE_SIZE_THRESHOLD} = require("../common/retrieve");
-const {
-  SCREENSHOT,
-  PREVIEW,
-  THUMBNAIL,
-  DOCUMENT,
-  READABLE_TEXT,
-  READABLE_DOC,
-  PAGE
-} = require("../common/resourceTypes");
-const generateResourcePath = require("../common/generateResourcePath");
-const {PNG, PDF, HTML} = require("../common/extensions");
-const {extractReadable, isReadableCompatible} = require("../extract/extractReadable");
-const cleanHtml = require("../extract/cleanHtml");
-const extractMetadata = require("../extract/extractMetadata");
-const extractPreview = require("../extract/extractPreview");
-const extractThumbnail = require("../extract/extractThumbnail");
+import {promises as fs} from "fs";
+import puppeteer from "puppeteer-extra";
+import {executablePath} from "puppeteer";
 
-const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+import logger from "../common/logger.js";
+import {IMAGE_SIZE_THRESHOLD, retrieveImage} from "../common/retrieve.js";
+
+import {DOCUMENT, PAGE, PREVIEW, READABLE_DOC, READABLE_TEXT, SCREENSHOT, THUMBNAIL} from "../common/resourceTypes.js";
+
+import generateResourcePath from "../common/generateResourcePath.js";
+import {HTML, PDF, PNG} from "../common/extensions.js";
+
+import {extractReadable, isReadableCompatible} from "../extract/extractReadable.js";
+
+import cleanHtml from "../extract/cleanHtml.js";
+import extractMetadata from "../extract/extractMetadata.js";
+import extractPreview from "../extract/extractPreview.js";
+import extractThumbnail from "../extract/extractThumbnail.js";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
+import AdblockPlugin from "puppeteer-extra-plugin-adblocker";
+
 puppeteer.use(StealthPlugin());
-
-const AdblockPlugin = require("puppeteer-extra-plugin-adblocker");
 puppeteer.use(AdblockPlugin({
   blockTrackers: true
 }));
@@ -104,7 +100,7 @@ const generatePage = async (page, targetPath, html) => {
   };
 }
 
-const scrapeUrl = async (scrapeRequest) => {
+export const scrapeUrl = async (scrapeRequest) => {
   const {url, resourceTypes, targetPath} = scrapeRequest;
   logger.info(`Scraping ${url} for types ${resourceTypes}`);
   let browser;
@@ -185,5 +181,3 @@ const scrapeUrl = async (scrapeRequest) => {
     }
   }
 }
-
-module.exports = scrapeUrl;

@@ -1,7 +1,8 @@
-const fs = require("fs");
-const {parse} = require("url");
-const logger = require("../common/logger");
-const {suggestUrl} = require("./suggestUrl");
+import fs from "fs";
+import {parse} from "url";
+
+import logger from "../common/logger.js";
+import {suggestUrl} from "./suggestUrl.js";
 
 const validateSuggestRequest = (request) => {
   const {url, targetPath} = request.body;
@@ -25,7 +26,7 @@ const validateSuggestRequest = (request) => {
   }
 }
 
-const suggest = async (req, res) => {
+export const suggest = async (req, res) => {
   try {
     const start = new Date().getTime();
     validateSuggestRequest(req);
@@ -37,8 +38,4 @@ const suggest = async (req, res) => {
     logger.error(err);
     return res.status(err.status || 500).json({error: err.message || err});
   }
-}
-
-module.exports = {
-  suggest
 }

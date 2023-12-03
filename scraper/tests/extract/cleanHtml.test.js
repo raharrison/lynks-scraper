@@ -1,4 +1,4 @@
-const cleanHtml = require("../../routes/extract/cleanHtml");
+import cleanHtml from "../../routes/extract/cleanHtml.js";
 
 describe('Clean HTML', () => {
   it('should clean provided HTML', async () => {

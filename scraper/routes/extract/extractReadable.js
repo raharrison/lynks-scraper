@@ -1,13 +1,14 @@
-const fs = require("fs").promises;
-const {JSDOM} = require("jsdom");
-const {Readability, isProbablyReaderable} = require("@mozilla/readability");
-const logger = require("../common/logger");
-const generateResourcePath = require("../common/generateResourcePath");
-const {READABLE_TEXT, READABLE_DOC} = require("../common/resourceTypes");
-const cleanHtml = require("./cleanHtml");
-const {HTML, TEXT} = require("../common/extensions");
+import {promises as fs} from "fs";
 
-const isReadableCompatible = (url, html) => {
+import {HTML, TEXT} from "../common/extensions.js";
+import cleanHtml from "./cleanHtml.js";
+import {READABLE_DOC, READABLE_TEXT} from "../common/resourceTypes.js";
+import generateResourcePath from "../common/generateResourcePath.js";
+import logger from "../common/logger.js";
+import {isProbablyReaderable, Readability} from "@mozilla/readability";
+import {JSDOM} from "jsdom";
+
+export const isReadableCompatible = (url, html) => {
   const cleaned = cleanHtml(html);
   const doc = new JSDOM(cleaned, {
     url: url
@@ -15,7 +16,7 @@ const isReadableCompatible = (url, html) => {
   return isProbablyReaderable(doc.window.document);
 };
 
-const extractReadable = async (url, html, targetPath, textContent) => {
+export const extractReadable = async (url, html, targetPath, textContent) => {
   const cleaned = cleanHtml(html);
   const doc = new JSDOM(cleaned, {
     url: url
@@ -34,5 +35,3 @@ const extractReadable = async (url, html, targetPath, textContent) => {
     extension: extension
   };
 }
-
-module.exports = {isReadableCompatible, extractReadable}
