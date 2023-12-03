@@ -110,7 +110,7 @@ const scrapeUrl = async (scrapeRequest) => {
   let browser;
   try {
     browser = await puppeteer.launch({
-      headless: true,
+      headless: 'new',
       executablePath: executablePath(),
       args: [
         "--disable-gpu",
