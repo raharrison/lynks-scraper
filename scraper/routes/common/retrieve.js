@@ -2,6 +2,7 @@ import fetch from "node-fetch";
 import logger from "./logger.js";
 
 export const IMAGE_SIZE_THRESHOLD = 2000; // 2KB min
+const USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
 
 export const retrievePage = async (url) => {
   const res = await fetch(url, {
@@ -9,6 +10,9 @@ export const retrievePage = async (url) => {
     redirect: 'follow',
     compress: true,
     agent: false,
+    headers: {
+      "User-Agent": USER_AGENT
+    }
   });
   if (!res.ok) {
     throw {message: `Got ${res.status} error code from "${url}"`};
@@ -36,6 +40,9 @@ export const retrieveImage = async (url) => {
     redirect: 'follow',
     compress: true,
     agent: false,
+    headers: {
+      "User-Agent": USER_AGENT
+    }
   });
   if (!res.ok) {
     throw {message: `Got ${res.status} error code from "${url}"`};
