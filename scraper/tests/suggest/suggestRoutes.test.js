@@ -33,7 +33,7 @@ describe('Suggest endpoint validation', () => {
 
 describe('Suggest endpoint', () => {
 
-  const url = "https://www.bbc.com/news/technology-57324917";
+  const url = "https://www.wired.co.uk/article/google-chrome-seven-zero-day-flaws-critical-update-november-2023";
   const targetPath = `${__dirname}/resources-suggest`;
 
   afterAll(() => {
@@ -57,9 +57,10 @@ describe('Suggest endpoint', () => {
 
     const details = res.body.details;
     expect(details.url).toEqual(url);
-    expect(details.title).toEqual("East of England broadband boost for 1 million planned");
+    expect(details.title).toEqual("Google Fixes a Seventh Zero-Day Flaw in Chrome—Update Now");
     expect(details.description).toBeTruthy();
-    expect(details.author).toEqual("@BBCWorld");
+    expect(details.author).toEqual("@WiredUK");
+    expect(details.published).toBeTruthy();
 
     const generatedResources = res.body.resources;
     expect(generatedResources.length).toEqual(3);

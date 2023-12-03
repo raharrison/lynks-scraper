@@ -11,7 +11,7 @@ describe('Extract metadata', () => {
   const url = "https://ryanharrison.co.uk/2020/04/12/kotlin-java-ci-with-github-actions.html";
 
   it('should extract metadata from given page', async () => {
-    const sourceHtml = fs.readFileSync(`${__dirname}/sample.html`);
+    const sourceHtml = fs.readFileSync(`${__dirname}/sample.html`).toString();
 
     const metadata = extractMetadata(url, sourceHtml);
 
