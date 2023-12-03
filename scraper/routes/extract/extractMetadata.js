@@ -1,5 +1,6 @@
 import {JSDOM} from "jsdom";
 import {unescape} from "html-escaper";
+import {removeStyles} from "./cleanHtml.js";
 
 const descriptionAttrs = [
   'description',
@@ -73,7 +74,7 @@ const findMetaTitle = function (document) {
 }
 
 export default (target, html) => {
-  const dom = new JSDOM(html);
+  const dom = new JSDOM(removeStyles(html));
 
   const metadata = {
     url: '',
